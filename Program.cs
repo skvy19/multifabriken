@@ -20,6 +20,8 @@ namespace Multifabriken
 
             string input;
             var cars = new Cars();
+            var candy = new Sweets();
+            var pipe = new Pipes();
 
             while(true) {
                 switch(Console.ReadKey(true).Key) {
@@ -47,11 +49,35 @@ namespace Multifabriken
                         break;
                     case  ConsoleKey.D2:
                         Header();
-                        Console.WriteLine("Godis");
+
+                        Console.WriteLine("Beställning av godis\n");
+                        Console.Write("Ange smak: ");
+                        input = Console.ReadLine();
+                        candy.taste = input;
+
+                        Console.Write("Ange antal: ");
+                        input = Console.ReadLine();
+                        candy.quantity = Convert.ToInt32(input);
+
+                        Header();
+                        candy.Confirmation();
+
                         break;
                     case  ConsoleKey.D3:
                         Header();
-                        Console.WriteLine("Rör");
+
+                        Console.WriteLine("Beställning av rör\n");
+                        Console.Write("Ange diameter i mm: ");
+                        input = Console.ReadLine();
+                        pipe.diameter = Convert.ToInt32(input);
+                        
+                        Console.Write("Ange längd i mm: ");
+                        input = Console.ReadLine();
+                        pipe.length = Convert.ToInt32(input);
+
+                        Header();
+                        pipe.Confirmation();
+
                         break;
                     case  ConsoleKey.D4:
                         Header();
