@@ -22,6 +22,7 @@ namespace Multifabriken
             var cars = new Cars();
             var candy = new Sweets();
             var pipe = new Pipes();
+            var milk = new Milks();
 
             while(true) {
                 switch(Console.ReadKey(true).Key) {
@@ -81,7 +82,18 @@ namespace Multifabriken
                         break;
                     case  ConsoleKey.D4:
                         Header();
-                        Console.WriteLine("Havremjölk");
+                        Console.WriteLine("Beställning av havremjölk\n");
+                        Console.Write("Ange litermängd: ");
+                        input = Console.ReadLine();
+                        milk.liter = Convert.ToDecimal(input);
+                        
+                        Console.Write("Ange fetthalt: ");
+                        input = Console.ReadLine();
+                        milk.fat = Convert.ToDecimal(input);
+
+                        Header();
+                        milk.Confirmation();
+
                         break;
                     case  ConsoleKey.D5:
                         Header();
