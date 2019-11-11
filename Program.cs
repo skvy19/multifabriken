@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Multifabriken
 {
@@ -17,11 +18,32 @@ namespace Multifabriken
         {
             Header();
 
+            string input;
+            var cars = new Cars();
+
             while(true) {
                 switch(Console.ReadKey(true).Key) {
-                    case  ConsoleKey.D1:
+                    case ConsoleKey.D1:
                         Header();
-                        Console.WriteLine("Bilar");
+
+                        Console.WriteLine("Bestälning av en bil\n");
+                        Console.Write("Ange registreringsnummer: ");
+                        input = Console.ReadLine();
+                        cars.nummer = input.ToUpper();
+
+                        Console.Write("Ange färg: ");
+                        input = Console.ReadLine();
+                        var firstChar = input.Substring(0, 1);
+                        var capitalizedFirstChar = input.Substring(0, 1).ToUpper();
+                        cars.color = input.Replace(firstChar, capitalizedFirstChar);
+
+                        Console.Write("Ange bilmärke: ");
+                        input = Console.ReadLine();
+                        cars.brand = input.ToUpper();
+                        
+                        Header();
+                        cars.Confirmation();
+                        
                         break;
                     case  ConsoleKey.D2:
                         Header();
@@ -43,9 +65,6 @@ namespace Multifabriken
                         return;
                     default:
                         Header();
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Ogilltigt val!");
-                        Console.ResetColor();
                         break;
                 }
             }
