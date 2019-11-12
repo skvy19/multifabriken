@@ -19,10 +19,15 @@ namespace Multifabriken
             Header();
 
             string input;
-            var cars = new Cars();
+            var car = new Cars();
             var candy = new Sweets();
             var pipe = new Pipes();
             var milk = new Milks();
+
+            var carsList = new List<object>();
+            var sweetsList = new List<object>();
+            var pipesList = new List<object>();
+            var milksList = new List<object>();
 
             while(true) {
                 switch(Console.ReadKey(true).Key) {
@@ -32,20 +37,21 @@ namespace Multifabriken
                         Console.WriteLine("Bestälning av en bil\n");
                         Console.Write("Ange registreringsnummer: ");
                         input = Console.ReadLine();
-                        cars.nummer = input.ToUpper();
+                        car.nummer = input.ToUpper();
 
                         Console.Write("Ange färg: ");
                         input = Console.ReadLine();
                         var firstChar = input.Substring(0, 1);
                         var capitalizedFirstChar = input.Substring(0, 1).ToUpper();
-                        cars.color = input.Replace(firstChar, capitalizedFirstChar);
+                        car.color = input.Replace(firstChar, capitalizedFirstChar);
 
                         Console.Write("Ange bilmärke: ");
                         input = Console.ReadLine();
-                        cars.brand = input.ToUpper();
+                        car.brand = input.ToUpper();
                         
                         Header();
-                        cars.Confirmation();
+                        car.Confirmation();
+                        carsList.Add(string.Format("{0} {1} med registreringsnummer {2}.", car.color, car.brand, car.nummer));
                         
                         break;
                     case  ConsoleKey.D2:
@@ -62,6 +68,7 @@ namespace Multifabriken
 
                         Header();
                         candy.Confirmation();
+                        sweetsList.Add(string.Format("{0}st godis i {1} smak.", candy.quantity, candy.taste));
 
                         break;
                     case  ConsoleKey.D3:
@@ -78,6 +85,7 @@ namespace Multifabriken
 
                         Header();
                         pipe.Confirmation();
+                        pipesList.Add(string.Format("Rör i {0}mm diameter och {1}mm längd.", pipe.diameter, pipe.length));
 
                         break;
                     case  ConsoleKey.D4:
@@ -93,11 +101,36 @@ namespace Multifabriken
 
                         Header();
                         milk.Confirmation();
+                        milksList.Add(string.Format("{0} liter havremjölk med {1} fetthalt.", milk.liter, milk.fat));
 
                         break;
                     case  ConsoleKey.D5:
                         Header();
-                        Console.WriteLine("Lista av produkter");
+
+                        if (carsList.Count > 0) {
+                            Console.WriteLine("Beställda bilar: ");
+                            foreach(var n in carsList) Console.WriteLine("* " + n);
+                        } 
+                        
+                        if (sweetsList.Count > 0) {
+                            Console.WriteLine("\nBeställda godis: ");
+                            foreach(var n in sweetsList) Console.WriteLine("* " + n);
+                        } 
+                        
+                        if (pipesList.Count > 0) {
+                            Console.WriteLine("\nBeställda rör: ");
+                            foreach(var n in pipesList) Console.WriteLine("* " + n);
+                        } 
+
+                        if (milksList.Count > 0) {
+                            Console.WriteLine("\nBeställda havremjölk: ");
+                            foreach(var n in milksList) Console.WriteLine("* " + n);
+                        } 
+                        
+                        if  (carsList.Count == 0 && sweetsList.Count == 0 && pipesList.Count == 0 && milksList.Count == 0){
+                            Console.WriteLine("Inga produkter har beställts!");
+                        }
+                            
                         break;
                     case  ConsoleKey.D6:
                         return;
