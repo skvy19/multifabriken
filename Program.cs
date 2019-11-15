@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Multifabriken
 {
     class Program
     {
-        static void Header() {
-            Console.Clear();
-            Console.WriteLine("**********************************************\n");
-            Console.WriteLine("\t\tMultifabriken AB");          
-            Console.WriteLine("\n**********************************************");  
-            Console.WriteLine("[1] Bilar\t\t[5] Lista produkter\n[2] Godis\t\t[6] Avsluta\n[3] Rör\n[4] Havremjölk");
-            Console.WriteLine("______________________________________________\n");
-        }
-
         static void Main(string[] args)
         {
             Header();
 
-            string input;
+            string input = "";
             var car = new Cars();
             var candy = new Sweets();
             var pipe = new Pipes();
@@ -33,113 +25,94 @@ namespace Multifabriken
                 switch(Console.ReadKey(true).Key) {
                     case ConsoleKey.D1:
                         Header();
-
-                        Console.WriteLine("Bestälning av en bil\n");
-                        Console.Write("Ange registreringsnummer: ");
-                        input = Console.ReadLine();
-                        car.nummer = input.ToUpper();
-
-                        Console.Write("Ange färg: ");
-                        input = Console.ReadLine();
-                        var firstChar = input.Substring(0, 1);
-                        var capitalizedFirstChar = input.Substring(0, 1).ToUpper();
-                        car.color = input.Replace(firstChar, capitalizedFirstChar);
-
-                        Console.Write("Ange bilmärke: ");
-                        input = Console.ReadLine();
-                        car.brand = input.ToUpper();
-                        
-                        Header();
+                        car.Form(input);
                         car.Confirmation();
-                        carsList.Add(string.Format("{0} {1} med registreringsnummer {2}.", car.color, car.brand, car.nummer));
-                        
+                        carsList.Add(car.Item());
                         break;
+
                     case  ConsoleKey.D2:
                         Header();
-
-                        Console.WriteLine("Beställning av godis\n");
-                        Console.Write("Ange smak: ");
-                        input = Console.ReadLine();
-                        candy.taste = input;
-
-                        Console.Write("Ange antal: ");
-                        input = Console.ReadLine();
-                        candy.quantity = Convert.ToInt32(input);
-
-                        Header();
+                        candy.Form(input);
                         candy.Confirmation();
-                        sweetsList.Add(string.Format("{0}st godis i {1} smak.", candy.quantity, candy.taste));
-
+                        sweetsList.Add(candy.Item());
                         break;
+
                     case  ConsoleKey.D3:
                         Header();
-
-                        Console.WriteLine("Beställning av rör\n");
-                        Console.Write("Ange diameter i mm: ");
-                        input = Console.ReadLine();
-                        pipe.diameter = Convert.ToInt32(input);
-                        
-                        Console.Write("Ange längd i mm: ");
-                        input = Console.ReadLine();
-                        pipe.length = Convert.ToInt32(input);
-
-                        Header();
+                        pipe.Form(input);
                         pipe.Confirmation();
-                        pipesList.Add(string.Format("Rör i {0}mm diameter och {1}mm längd.", pipe.diameter, pipe.length));
-
+                        pipesList.Add(pipe.Item());
                         break;
+
                     case  ConsoleKey.D4:
                         Header();
-                        Console.WriteLine("Beställning av havremjölk\n");
-                        Console.Write("Ange litermängd: ");
-                        input = Console.ReadLine();
-                        milk.liter = Convert.ToDecimal(input);
-                        
-                        Console.Write("Ange fetthalt: ");
-                        input = Console.ReadLine();
-                        milk.fat = Convert.ToDecimal(input);
-
-                        Header();
+                        milk.Form(input);
                         milk.Confirmation();
-                        milksList.Add(string.Format("{0} liter havremjölk med {1} fetthalt.", milk.liter, milk.fat));
-
+                        milksList.Add(milk.Item());
                         break;
+
                     case  ConsoleKey.D5:
+                        string text;
                         Header();
+                        text = "Beställda bilar: ";
+                        ShowItems(text, carsList);
+                        
+                        text = "\nBeställda godis: ";
+                        ShowItems(text, sweetsList);
+                        
+                        text = "\nBeställda rör: ";
+                        ShowItems(text, pipesList);
 
-                        if (carsList.Count > 0) {
-                            Console.WriteLine("Beställda bilar: ");
-                            foreach(var n in carsList) Console.WriteLine("* " + n);
-                        } 
-                        
-                        if (sweetsList.Count > 0) {
-                            Console.WriteLine("\nBeställda godis: ");
-                            foreach(var n in sweetsList) Console.WriteLine("* " + n);
-                        } 
-                        
-                        if (pipesList.Count > 0) {
-                            Console.WriteLine("\nBeställda rör: ");
-                            foreach(var n in pipesList) Console.WriteLine("* " + n);
-                        } 
+                        text = "\nBeställda havremjölk: ";
+                        ShowItems(text, milksList);
 
-                        if (milksList.Count > 0) {
-                            Console.WriteLine("\nBeställda havremjölk: ");
-                            foreach(var n in milksList) Console.WriteLine("* " + n);
-                        } 
-                        
-                        if  (carsList.Count == 0 && sweetsList.Count == 0 && pipesList.Count == 0 && milksList.Count == 0){
-                            Console.WriteLine("Inga produkter har beställts!");
-                        }
-                            
+                        ShowEmptyMsg(carsList, sweetsList, pipesList, milksList);
                         break;
+
                     case  ConsoleKey.D6:
                         return;
+                        
                     default:
                         Header();
                         break;
                 }
             }
 
+        }
+
+        static void Header() {
+            Console.Clear();
+
+            var builder = new StringBuilder();
+
+            builder
+                .Append('*', 50)
+                .AppendLine("\n")
+                .Append("\t\tMultifabriken AB")
+                .AppendLine("\n")
+                .Append('*', 50)
+                .Append("\n[1] Bilar").AppendLine("\t\t[5] Lista produkter")
+                .Append("[2] Godis").AppendLine("\t\t[6] Avsluta")
+                .Append("[3] Rör\n")
+                .Append("[4] Havremjölk\n")
+                .Append('_', 50)
+                .AppendLine("\n");
+            
+            Console.WriteLine(builder);
+
+        }
+
+        static void ShowItems(string text, List<object> list) {
+            if (list.Count > 0) {
+                Console.WriteLine(text);
+                foreach(var n in list) Console.WriteLine("* " + n);
+            } 
+        }
+
+        static void ShowEmptyMsg(List<object> list1, List<object> list2, List<object> list3, List<object> list4) {
+            if  (list1.Count + list2.Count + list3.Count + list4.Count == 0){
+                Console.WriteLine("Inga produkter har beställts!");
+            }
         }
     }
 }
